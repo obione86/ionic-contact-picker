@@ -14,7 +14,7 @@ $ bower install platanus-ionic-contact-picker
 Finally, include the JS file in your HTML and the `platanus.contactPicker` dependency in your Angular app.
 
 ```javascript
-angular.module('yourApp', ['PlContactPicker']);
+angular.module('yourApp', ['platanus.contactPicker']);
 ```
 
 ## How to use
