@@ -2,10 +2,10 @@
     'use strict';
 
     var CONTACT_PICKER_TPL =
-        '<ion-modal-view>' + '<ion-header-bar align-title="left" class="bar-positive">' + '<div class="buttons">' + '<button class="button" ng-click="hide()">{{cancelText}}</button>' + '</div>' + '<h1 class="title">{{title}}</h1>' + '</ion-header-bar>' + '<ion-content>' + '<label class="item item-input">' + '<i class="icon ion-search placeholder-icon"></i>' + '<input type="search" placeholder="{{placeholder}}" ng-model="searchText">' + '</label>' + '<ion-list>' + '<ion-item ng-click="onSelected(contact)" item-width:"100%" collection-repeat="contact in contacts | filter:{ name: searchText}">' + '{{contact.name}}' + '</ion-item>' + '</ion-list>' + '</ion-content>' + '</ion-modal-view>';
+        '<ion-modal-view>' + '<ion-header-bar align-title="left" class="bar bar-header bar-{{headerStyle}}">' + '<div class="buttons">' + '<button class="button" ng-click="hide()">{{cancelText}}</button>' + '</div>' + '<h1 class="title">{{title}}</h1>' + '</ion-header-bar>' + '<ion-content>' + '<label class="item item-input">' + '<i class="icon ion-search placeholder-icon"></i>' + '<input type="search" placeholder="{{placeholder}}" ng-model="searchText">' + '</label>' + '<ion-list>' + '<ion-item ng-click="onSelected(contact)" item-width:"100%" collection-repeat="contact in contacts | filter:{ name: searchText}">' + '{{contact.name}}' + '</ion-item>' + '</ion-list>' + '</ion-content>' + '</ion-modal-view>';
 
     var CONTACT_PICKER_MULTI_TPL =
-        '<ion-modal-view>' + '<ion-header-bar align-title="left" class="bar-positive">' + '<div class="buttons">' + '<button class="button" ng-click="hide()">{{cancelText}}</button>' + '</div>' + '<h1 class="title">{{title}}</h1>' + '<div class="buttons">' + '<button class="button" ng-click="onMultiSelect(contacts)">{{selectText}}</button>' + '</div>' + '</ion-header-bar>' + '<ion-content>' + '<label class="item item-input">' + '<i class="icon ion-search placeholder-icon"></i>' + '<input type="search" placeholder="{{placeholder}}" ng-model="searchText">' + '</label>' + '<ion-list>' + '<ion-item class="item-icon-right" ng-click="contact.selected=!contact.selected" item-width:"100%" collection-repeat="contact in contacts | filter:{ name: searchText}">' + '{{contact.name}}' + '<i class="icon" ng-class="{\'ion-android-checkbox-outline-blank\' : !contact.selected, \'ion-android-checkbox-outline\':contact.selected}"></i>' + '</ion-item>' + '</ion-list>' + '</ion-content>' + '</ion-modal-view>';
+        '<ion-modal-view>' + '<ion-header-bar align-title="left" class="bar bar-header bar-{{headerStyle}}">' + '<div class="buttons">' + '<button class="button" ng-click="hide()">{{cancelText}}</button>' + '</div>' + '<h1 class="title">{{title}}</h1>' + '<div class="buttons">' + '<button class="button" ng-click="onMultiSelect(contacts)">{{selectText}}</button>' + '</div>' + '</ion-header-bar>' + '<ion-content>' + '<label class="item item-input">' + '<i class="icon ion-search placeholder-icon"></i>' + '<input type="search" placeholder="{{placeholder}}" ng-model="searchText">' + '</label>' + '<ion-list>' + '<ion-item class="item-icon-right" ng-click="contact.selected=!contact.selected" item-width:"100%" collection-repeat="contact in contacts | filter:{ name: searchText}">' + '{{contact.name}}' + '<i class="icon" ng-class="{\'ion-android-checkbox-outline-blank\' : !contact.selected, \'ion-android-checkbox-outline\':contact.selected}"></i>' + '</ion-item>' + '</ion-list>' + '</ion-content>' + '</ion-modal-view>';
     /**
      * @ngdoc service
      * @name contactPicker
@@ -86,8 +86,9 @@
         function createModalPromise(options) {
 
             // if the call is set then set the local var
-            if (options.selected)
+            if (options.selected) {
                 self.onSelectedCallback = options.selected;
+            }
 
             // set the options default values
             options = angular.extend({
@@ -98,6 +99,7 @@
                 cancelText: 'Cancel',
                 selectText: 'Select',
                 placeholder: 'Search',
+                headerStyle: 'positive'
             }, options);
 
             /**
@@ -116,13 +118,14 @@
             scope.searchText = options.searchText;
             scope.cancelText = options.cancelText;
             scope.selectText = options.selectText;
+            scope.headerStyle = options.headerStyle;
 
             // if no contacts were passed connect to phone
             if (options.contacts.length === 0) {
                 PhoneContacts.connect({}, function (contacts, err) {
-                    if (err)
+                    if (err) {
                         console.log(err);
-
+                    }
                     scope.contacts = contacts;
                     scope.$digest();
                 });
