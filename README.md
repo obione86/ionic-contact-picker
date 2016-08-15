@@ -25,6 +25,8 @@ angular.module('yourApp', ['platanus.contactPicker']);
 var myContactPicker = contactPicker.open({
   title: 'Do some searchinnn\'!',
   searchPlaceholder: 'type here...',
+  multiSelect: true,
+  headerStyle: 'positive',
   selected: function(contact){
     console.log('Selected ',contact);
   },
@@ -39,6 +41,10 @@ $timeout(function(){
 
 Note that if no contacts are passed the service attempts to connect
 to the phone using ngCordova's contact plugin.
+
+To select multiple contacts set the 'multiSelect' option to true; default: false
+To change the header bar color to suit your app colour scheme, set the headerStyle option to the desrired ionic colour e.g. positive, assertive, calm etc. 
+There is no need to add the 'bar-' prefix.
 
 ## Default look
 ![](http://i.imgur.com/HAb5z8A.gif)
